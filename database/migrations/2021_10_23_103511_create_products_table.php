@@ -17,7 +17,7 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('description');
-            $table->string('img');
+            $table->string('image');
             $table->double('price');
              $table->integer('subcategory_id')->unsigned();
             // $table->foreign('subcategory_id')->references('id')->on('subcategories');

@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Site Metas -->
-    <title>ThewayShop - Ecommerce Bootstrap 4 HTML Template</title>
+    <title>Theway Shop</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -56,24 +56,11 @@
                 <div class="collapse navbar-collapse" id="navbar-menu">
                     <ul class="nav navbar-nav ml-auto" data-in="fadeInDown" data-out="fadeOutUp">
                         <li class="nav-item active"><a class="nav-link" href="{{url('')}}">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ route('about_us')}}">About Us</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ route('contact_us') }}">Contact Us</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('about.page')}}">About Us</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('contact.page') }}">Contact Us</a></li>
                     </ul>
                 </div>
-                <!-- /.navbar-collapse -->
 
-                <!-- Start Atribute Navigation -->
-                <div class="attr-nav">
-                    <ul>
-                        <li class="search"><a href="#"><i class="fa fa-search"></i></a></li>
-                        <li class="side-menu"><a href="#">
-						<i class="fa fa-shopping-bag"></i>
-                            <span class="badge">3</span>
-					</a></li>
-                    </ul>
-                </div>
-                <!-- End Atribute Navigation -->
-            </div>
             <!-- Start Side Menu -->
             <div class="side">
                 <a href="#" class="close-side"><i class="fa fa-times"></i></a>

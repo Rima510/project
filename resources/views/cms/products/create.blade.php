@@ -31,12 +31,12 @@
                 </ul>
             </div>
     @endif
-          <form action="{{ route('products.store') }}" method="POST">
+          <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="card-body">
                 <div class="form-group">
                     <label for="name">Subcategory </label>
-                    <select class="form-control" name="category_id">
+                    <select class="form-control" name="subcategory_id">
                         <option value="">select the Subcategory</option>
                         @foreach ($subcategories as $subcategory )
                         <option value="{{ $subcategory->id }}">{{ $subcategory->name }}</option>

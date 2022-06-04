@@ -31,26 +31,31 @@
           <td>
 
 
-                <img class="img-circle img-bordered-sm"   src="{{url(Storage::url($product->img))}}" width="80" height="65" alt="User Image">
+                <img class="  img-bordered-sm"   src="{{ $product->image_path  }}" width="80" height="65" alt="User Image">
 
-
-              <img class="img-circle img-bordered-sm" width="80" height="65"
-              src="{{url(Storage::url('products/default.png'))}}" alt="User Image">
 
             </td>
-            <td>{{ @$product->subcategory->category->name }}</td>
+            <td>{{$product->subcategory->category->name }}</td>
           <td>{{ $product->subcategory->name }}</td>
           <td>{{ $product->name }}</td>
           <td>{{ $product->price }}</td>
           <td>{{ $product->description }}</td>
-          <td> <span class="badge @if($product->status) bg-success @else bg-danger @endif  ">
-              {{ $product->visibility  }}</span></td>
+
 
           <td>{{ $product->created_at }}</td>
           <td>
-              <a href="{{ route('admin.products.edit',$product->id) }}" class="btn btn-info"> <i class="fas fa-edit"> </i></a>
-              <a href="#" onclick="productDestroy('{{ $product->id }}' ,this)"  class="btn btn-danger"><i class="fas fa-trash"></i></a>
-          </td>
+            <form action="{{ route('products.delete',$product->id) }}" method="POST">
+
+
+
+                <a href="{{ route('products.edit',$product->id) }}" class="btn btn-info"> <i class="fas fa-edit"> </i></a>
+
+                @csrf
+                @method('DELETE')
+
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </td>
       </tr>
           @endforeach
 

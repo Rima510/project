@@ -24,11 +24,20 @@
         </div>
         <div class="card-body">
           <p class="login-box-msg">Sign in to start your session</p>
-
-          <form >
+          @if ($errors->any())
+          <div class="alert alert-danger">
+              <strong>Whoops!</strong> There were some problems with your input.<br><br>
+              <ul>
+                  @foreach ($errors->all() as $error)
+                      <li>{{ $error }}</li>
+                  @endforeach
+              </ul>
+          </div>
+  @endif
+          <form action="{{ route('auth.login') }}" method="POST">
             @csrf
             <div class="input-group mb-3">
-              <input type="email" id="email" class="form-control" placeholder="Email">
+              <input type="email" name="email" class="form-control" placeholder="Email">
               <div class="input-group-append">
                 <div class="input-group-text">
                   <span class="fas fa-envelope"></span>
@@ -36,7 +45,7 @@
               </div>
             </div>
             <div class="input-group mb-3">
-              <input type="password" id="password" class="form-control" placeholder="Password">
+              <input type="password" name="password" class="form-control" placeholder="Password">
               <div class="input-group-append">
                 <div class="input-group-text">
                   <span class="fas fa-lock"></span>
@@ -54,7 +63,7 @@
               </div>
               <!-- /.col -->
               <div class="col-12">
-                <a type="submit" onclick="login()" class="btn btn-primary btn-block">Sign In</a>
+                <button type="submit" class="btn btn-primary btn-block">Sign In</button>
               </div>
               <!-- /.col -->
             </div>
@@ -77,26 +86,6 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{ asset('admin_files/plugins/toastr/toastr.min.js') }}"></script>
 <script src="{{ asset('js/axios.js') }}"></script>
-<script>
 
-    function login() {
-        axios.post('/admin/login',{
-            email:document.getElementById('email').value,
-            password:document.getElementById('password').value,
-            remember_me:document.getElementById('remember').checked,
-        }).then(function (response) {
-                // handle success
-                console.log(response);
-                window.location.href = '/admin';
-                //toastr.success(response.data.message);
-            }).catch(function (error) {
-                // handle error
-                console.log(error);
-                toastr.error(error.response.data.message);
-            })
-
-    }
-
-</script>
 </body>
 </html>

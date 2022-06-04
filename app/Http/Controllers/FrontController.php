@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Contact;
 use App\Models\Product;
+use App\Models\Social;
 use Illuminate\Http\Request;
 
 class FrontController extends Controller
@@ -13,7 +14,10 @@ class FrontController extends Controller
     {
         $categories = Category::all();
         $products = Product::all();
-        return view('front.index',compact('categories','products'));
+        return view('front.index',[
+            'products' => $products,
+            'categories' => $categories
+        ]);
     }
     public function contact(Request $request)
     {
@@ -33,5 +37,15 @@ class FrontController extends Controller
         $contact->save();
         return redirect()->back();
 
+    }
+    public function contactUs()
+    {
+        return view('front.contact');
+    }
+    public function about()
+    {
+        $items = Social::all();
+
+        return view('front.about',compact('items'));
     }
 }

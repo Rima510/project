@@ -115,12 +115,7 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(Category $category ,$id)
-    {
-
-        //
-        // //  $category->delete();
-        //  Category::findOrFail($id)->delete();
-        // return redirect()->back();
+    { 
         Category::findOrFail($id)->delete();
 
         return redirect()->back();

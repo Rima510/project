@@ -63,6 +63,7 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'image' => 'required',
             'price' => 'required',
+            'subcategory_id' => 'required',
 
         ]);
 
@@ -71,6 +72,8 @@ class ProductController extends Controller
 
             $request_data = $request->except('image');
             $request_data['image'] = $request->file('image')->store('products_images', 'public');
+
+
             $isSaved =   Product::create($request_data);
 
 
@@ -98,11 +101,10 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         //
-        $categories = Category::all();
+
         $subcategories = Subcategory::all();
         return response()->view('cms.products.edit', [
             'product' => $product,
-            'categories' => $categories,
             'subcategories' => $subcategories,
         ]);
     }
@@ -116,39 +118,29 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        $validator = Validator($request->all(), [
 
+
+        $request->validate([
             'name' => 'required|string|min:3|max:45',
             'description' => 'nullable|string',
-            'img' => 'required',
+            'image' => 'required',
             'price' => 'required',
-            // 'status' => 'required|boolean',
-            // 'status' => 'required|boolean',
+            'subcategory_id' => 'required',
+
         ]);
-        if (!$validator->fails()) {
-            Storage::disk('public')->delete($product->image);
-            $product->name = $request->input('name');
-            $product->price = $request->input('prcie');
-            // $product->status = $request->input('status');
-            $product->subcategory_id = $request->input('subcategory_id');
-            $product->description = $request->input('description');
 
-            if ($request->hasFile('img')) {
-                $image = $request->file('img');
-                $imageName = Carbon::now()->format('Y_m_d_h_i') . '_' . $product->name . '.' . $image->getClientOriginalExtension();
-                $request->file('img')->storeAs('/products', $imageName, ['disk' => 'public']);
-                $product->img = 'products/' . $imageName;
-            }
-            $isSave = $product->save();
+        $request_data = $request->all();
 
-            return response()->json([
-                'message' => $isSave ? 'Update successfully' : 'Update Failed'
-            ], $isSave ? Response::HTTP_CREATED : Response::HTTP_BAD_REQUEST);
-        } else {
-            return response()->json([
-                'message' =>   $validator->getMessageBag()->first()
-            ], Response::HTTP_BAD_REQUEST);
-        }
+
+            $request_data = $request->except('image');
+            $request_data['image'] = $request->file('image')->store('products_images', 'public');
+
+
+            $product->update($request_data);
+
+
+
+        return redirect()->route('products.index');
     }
 
     /**
@@ -157,23 +149,12 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy(Product $product ,$id)
     {
-        //
-        $imageName = $product->image;
-        $deleted = $product->delete();
-        if ($deleted) Storage::disk('public')->delete($imageName);
-        return response()->json([
-            'title' => $deleted ? 'Deleted successfully' : "Delete failed",
-            'icon' => $deleted ? 'success' : "error",
-        ], $deleted ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
+        Product::findOrFail($id)->delete();
+
+        return redirect()->back();
     }
 
 
-    //////// get subcategory ajax
-    public function getSubcategory($id)
-    {
-        $subcategories = DB::table('subcategories')->where('category_id', $id)->pluck('name', 'id');
-        return response()->json($subcategories);
-    }
 }

@@ -15,63 +15,39 @@ class AuthController extends Controller
     //
     public function showLogin()
      {
-        return response()->view('cms.auth.login');
+        return  view('cms.auth.login');
     }
     public function login(Request $request)
     {
-        $validator = Validator($request->all(), [
+        $request->validate([
                'email'       => 'required|email',
                'password'    => 'required|string|min:3|max:30',
-               'remember_me' => 'required|boolean'
+
         ]);
 
-        if(! $validator->fails())
-        {
-                $credentials = ['email' => $request->input('email'), 'password'=> $request->input('password') ];
-                if(Auth::guard('admin')->attempt($credentials,$request->input('remember_me'))){
-                    return response()->json([
-                        'message' => 'Logged Successfully'
-                    ], Response::HTTP_OK);
-                }else {
-                    return response()->json([
-                        'message' => "Error credentials, check and try again"
-                    ], Response::HTTP_BAD_REQUEST);
-                }
+        $remember_me = $request->has('remember_me') ? true : false;
 
-        }else {
-            return response()->json([
-                'message' =>  $validator ->getMessageBag()->first()
-            ], Response::HTTP_BAD_REQUEST);
+        if (Auth::guard('admin')->attempt(['email' => $request->input("email"), 'password' => $request->input("password")], $remember_me)) {
+           // notify()->success('تم الدخول بنجاح  ');
+            return redirect() -> route('admin.home');
         }
+       // notify()->error('خطا في البيانات  برجاء المجاولة مجدا ');
+        return redirect()->back()->with(['error' => 'هناك خطا بالبيانات']);
+
+
+        
+
+                // $credentials = ['email' => $request->input('email'), 'password'=> $request->input('password') ];
+                //  if(Auth::guard('admin')->attempt($credentials )) {
+                //       return redirect()->route('admin.home');
+                //  }
+                //  return redirect()->back()->with(['error' => 'هناك خطا بالبيانات']);
+
+
 
     }
-    public function editPassword(Request $request)
-    {
-        return response()->view('cms.auth.edit-password');
-    }
-    public function updatePassword(Request $request)
-    {
-        $validator = Validator($request->all(),[
-            'password'=>'required|string|current_password:admin',
-            'new_password'=>'required|string|min:2|max:30|confirmed',
-            'new_password_confirmation'=>'required|string|min:2|max:30',
-        ]);
-        if(! $validator ->fails()) {
-            $user = auth('admin')->user();
-            $user->password = Hash::make($request->input('password'));
-            $isSave =  $user->save();
-            return response() ->json([
-                'message' => $isSave ? 'password updated successfully' :' update failed'
-            ],$isSave ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
 
 
-
-        }else {
-            return response()->json([
-                'message' => $validator->getMessageBag()->first()
-            ],Response::HTTP_BAD_REQUEST);
-        }
-    }
 
     public function logout(Request $request)
     {

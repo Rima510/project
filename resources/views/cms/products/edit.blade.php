@@ -19,62 +19,55 @@
           <div class="card-header">
             <h3 class="card-title">Products Edit</h3>
           </div>
-          <!-- /.card-header -->
-          <!-- form start -->
-          <form id="create-form">
+          @if ($errors->any())
+          <div class="alert alert-danger">
+              <strong>Whoops!</strong> There were some problems with your input.<br><br>
+              <ul>
+                  @foreach ($errors->all() as $error)
+                      <li>{{ $error }}</li>
+                  @endforeach
+              </ul>
+          </div>
+         @endif
+          <form action="{{ route('products.update' ,$product->id)}}" method="POST" enctype="multipart/form-data">
+          @csrf
+          @method('PUT')
             <div class="card-body">
                 <div class="form-group">
                     <label for="name">Category </label>
-                    <select class="form-control" name="" id="category_id">
-                        <option value="">select the cotegory</option>
-                        @foreach ($categories as $category )
-                        <option value="{{ $category->id }}" {{ $product->subcategory_id == $category->id ? 'selected' :''  }}>{{ $category->name }}</option>
-                        @endforeach
-
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="name">Subcategory </label>
-                    <select class="form-control" name="" id="subcategory_id">
+                    <select class="form-control" name="subcategory_id">
                         <option value="">select the subcotegory</option>
                         @foreach ($subcategories as $subcategory )
-                        <option value="{{ $subcategory->id }}" {{ $product->subcategory_id ==$subcategory->id ? 'selected' :'' }}>{{ $subcategory->name }}</option>
-
+                        <option value="{{ $subcategory->id }}" >{{ $subcategory->name }}</option>
                         @endforeach
+
                     </select>
                 </div>
+
                 <div class="form-group">
                 <label for="name">name </label>
-                <input type="text" class="form-control" id="name" value="{{ $product->name }}"  placeholder="Enter name">
+                <input type="text" class="form-control" name="name" value="{{ $product->name }}"  placeholder="Enter name">
               </div>
               <div class="form-group">
                 <label for="name">Price </label>
-                <input type="text" class="form-control" id="name" value="{{ $product->price }}"  placeholder="Enter name">
+                <input type="text" class="form-control" name="price" value="{{ $product->price }}"  placeholder="Enter name">
               </div>
               <div class="form-group">
                 <label>Description</label>
-                <textarea class="form-control" id="description" rows="3" placeholder="Enter ...">{{ $product->description }}</textarea>
+                <textarea class="form-control" name="description" rows="3" placeholder="Enter ...">{{ $product->description }}</textarea>
               </div>
 
               <div class="form-group">
                 <label>image</label>
-                <input type="file" id="img" class="form-control image" >
+                <input type="file" name="image" class="form-control image" >
               </div>
 
-              <div class="form-group">
-                <img src="{{url(Storage::url($product->img))}}" style="width: 100px" class="img-thumbnail image-preview" alt="">
-            </div>
-            <div class="form-group">
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="status">
-                    <label class="custom-control-label" for="status">Visible</label>
-                </div>
-            </div>
+
+
 
             <div class="card-footer">
-              {{--  <button type="button" onclick="store()" class="btn btn-primary">Submit</button>  --}}
+                <button type="submit"  class="btn btn-primary">Submit</button>
 
-              <a href="#" onclick="performEdit()"  class="btn btn-info">submit</i></a>
 
             </div>
           </form>

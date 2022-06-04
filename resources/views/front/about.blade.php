@@ -18,6 +18,23 @@
                     </div>
                 </div>
             </div>
+             <div class="col-lg-4 col-md-12 col-sm-12">
+                        <div class="footer-widget">
+
+
+                            <ul>
+                            @foreach ($items as $item )
+
+
+                                <li><a href= "{{@ $item->facebook }}" target="_blank"><i class="fab fa-facebook" aria-hidden="true"></i></a></li>
+                                <li><a href="{{@ $item->twitter }}" target="_blan"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
+                                <li><a href="{{@ $item->linkedin }}" target="_blan"><i class="fab fa-linkedin" aria-hidden="true"></i></a></li>
+                                 <li><a href="{{@ $item->whatsapp }}" target="_blan"><i class="fab fa-whatsapp" aria-hidden="true"></i></a></li>
+                            @endforeach
+
+                            </ul>
+                        </div>
+                    </div>
 
 
         </div>
